@@ -1,6 +1,6 @@
 import express from 'express'
 import {PORT, MongoDburl} from './config.js'
-import { MongoClient, ServerApiVersion } from "mongodb"
+import { MongoClient, ObjectId, ServerApiVersion } from "mongodb"
 const app = express()
 
 app.use(express.json()) 
@@ -26,15 +26,36 @@ app.get('/',(req, res)=> {
 })
 
 app.get('/shop',(req, res)=> {
-  return  res.status(232).send("<a href= '/'> Home</a>")
+  //return  res.status(232).send("<a href= '/'> Home</a>")
+  
+  myBooks.find().toArray()
+  .then(response=>{
+      //console.log(response)
+      res.status(200).send(response)
+  }) 
+  .catch(err=>console.log(err))
+  //return res.status(232).send(`<a href = '/'>Home ${data.id}</a>`)
+
 })
 
 app.get('/shop/:id',(req, res)=> { 
-    const data = req.params
-   return res.status(232).send(`<a href = '/'>Home ${data.id}</a>`)
+    const data = req.params 
+
+    const filter = {
+        "_id": new ObjectId(data.id)
+        
+    }
+    
+    myBooks.findOne(filter)
+    .then(response=>{
+        //console.log(response)
+        res.status(200).send(response)
+    }) 
+    .catch(err=>console.log(err))
+   //return res.status(232).send(`<a href = '/'>Home ${data.id}</a>`)
 }) 
 
-app.post('/savebook',(req,res)=>{
+app.post('/admin/savebook',(req,res)=>{
     const data = req.body 
     if(!data.title)
     return res.status(400).send("No Title Found")
@@ -51,4 +72,40 @@ app.post('/savebook',(req,res)=>{
     })
 
     return res.status(201).send(JSON.stringify (data))
+}) 
+
+app.delete('/admin/remove/:id',(req, res)=>{
+    const data = req.params 
+    const filter = {
+    '_id': new ObjectId(data.id)
+    }
+    myBooks.deleteOne(filter)
+        .then(response=>{
+            //console.log(response)
+            res.status(200).send(response)
+        }) 
+        .catch(err=>console.log(err))
+})
+
+app.put('/admin/update/:id',(req, res)=>{
+    const data = req.params 
+    const docdata = req.body
+
+    const filter = {
+        "_id": new ObjectId(data.id)
+    }
+    
+    const updDoc = {
+        $set: {
+            "price": data.price 
+        }
+    }
+
+    myBooks.updateOne(filter, updDoc)
+    .then(response=>{
+        //console.log(response)
+        res.status(200).send(response)
+    })
+    .catch(err=>console.log(err))
+
 })
