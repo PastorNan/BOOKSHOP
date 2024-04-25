@@ -24,15 +24,14 @@ const ShowAll = () => {
 
     return (
         <>
-            <p>Books found: {allBooks.length}</p>
+            <p className="text-3xl text-slate-600">Books found: {allBooks.length}</p>
             {allBooks.map(book => {
                 return(
                     <ShowBook key={book._id} book={book} />
-
                 )
             })}
         </>
     )
 }
 
-    export default ShowAll
+export default ShowAll
