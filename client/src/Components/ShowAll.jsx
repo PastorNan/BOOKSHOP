@@ -25,11 +25,13 @@ const ShowAll = () => {
     return (
         <>
             <p className="text-3xl text-slate-600">Books found: {allBooks.length}</p>
+            <div className="grid grid-cols-4">
             {allBooks.map(book => {
                 return(
                     <ShowBook key={book._id} book={book} />
                 )
             })}
+            </div>
         </>
     )
 }
