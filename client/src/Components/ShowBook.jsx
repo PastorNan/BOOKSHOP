@@ -1,4 +1,5 @@
 import React from 'react'
+import RemoveBook from './RemoveBook'
 
 const ShowBook = ({book}) => {
     return (
@@ -14,6 +15,7 @@ const ShowBook = ({book}) => {
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
                 </svg> 
             </a>
+            <RemoveBook id={book._id}/>
         </div>
 
     )
