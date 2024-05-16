@@ -98,6 +98,9 @@ app.put('/admin/update/:id', (req, res) => {
         "_id": new ObjectId(data.id)
     }
 
+    // remove _id key
+    delete docdata._id
+    
     const updDoc = {
         $set: {
             "price": data.price
